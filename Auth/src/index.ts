@@ -1,5 +1,5 @@
 import express from 'express'
-
+import { currentUserRouter } from './Routes/current-user'
 const app = express()
 app.use(
   express.json({
@@ -10,14 +10,14 @@ app.use(
   express.urlencoded({
     extended: true,
     limit: '10kb',
-  }) 
+  })
 );
 
-app.get('/api/users/currentuser', (request, response)=> {
- response.send('Hi there')
-})
+//ROUTE MIDDLEWARE
+app.use(currentUserRouter)
 
-app.listen(3000, ()=>{
+
+app.listen(3000, () => {
   console.log('Auth Running at port 3000');
-  
+
 })
