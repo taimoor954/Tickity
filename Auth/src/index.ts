@@ -12,6 +12,11 @@ app.use(
     limit: '10kb',
   }) 
 );
+
+app.get('/api/users/currentuser', (request, response)=> {
+ response.send('Hi there')
+})
+
 app.listen(3000, ()=>{
   console.log('Auth Running at port 3000');
   
