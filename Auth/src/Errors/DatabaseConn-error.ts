@@ -1,7 +1,7 @@
 import {ValidationError, validationResult} from 'express-validator'
 
 export class DatabaseConnectionError extends Error{
-  reason:string  = 'Error Connecting to D'
+  reason:string  = 'Error Connecting to Database'
   constructor(reason:String )
   {
     super()
