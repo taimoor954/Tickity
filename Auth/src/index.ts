@@ -1,5 +1,8 @@
 import express from 'express'
 import { currentUserRouter } from './Routes/current-user'
+import { signinRouter } from './Routes/signin'
+import { signoutRouter } from './Routes/signout'
+import { signupRouter } from './Routes/signup'
 const app = express()
 app.use(
   express.json({
@@ -15,6 +18,9 @@ app.use(
 
 //ROUTE MIDDLEWARE
 app.use(currentUserRouter)
+app.use(signinRouter)
+app.use(signupRouter)
+app.use(signoutRouter)
 
 
 app.listen(3000, () => {
