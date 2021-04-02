@@ -4,6 +4,7 @@ import { signinRouter } from './Routes/signin'
 import { signoutRouter } from './Routes/signout'
 import { signupRouter } from './Routes/signup'
 import {errorHandler} from '../src/middlewares/error-handler'
+import {NotFoundError} from './Errors/Not-Found-Error'
 
 const app = express()
 app.use(
@@ -23,6 +24,13 @@ app.use(currentUserRouter)
 app.use(signinRouter)
 app.use(signupRouter)
 app.use(signoutRouter)
+
+//Route not Found
+app.all('*', ()=>{
+  throw new NotFoundError()
+})
+
+//GLOBAL ERROR HANDLE MIDDLEWARE
 app.use(errorHandler)
 
 app.listen(3000, () => {
