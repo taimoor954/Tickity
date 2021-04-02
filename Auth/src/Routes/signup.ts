@@ -14,7 +14,7 @@ router.post(
       .isLength({ min: 4, max: 25 })
       .withMessage('Password must be between 4 and 25 length'),
   ],
-  (request: Request, response: Response) => {
+  async (request: Request, response: Response) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
         throw new RequestValidationError(errors.array())   

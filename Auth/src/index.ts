@@ -1,4 +1,5 @@
 import express from 'express'
+import 'express-async-errors' //USING THIS PACKAGE WE CAN DEAL WITH ASYNC ERRORS IN SYNC WAY WITHIUT USING NEXT MIDDLEWARE
 import { currentUserRouter } from './Routes/current-user'
 import { signinRouter } from './Routes/signin'
 import { signoutRouter } from './Routes/signout'
@@ -26,7 +27,7 @@ app.use(signupRouter)
 app.use(signoutRouter)
 
 //Route not Found
-app.all('*', ()=>{
+app.all('*',async (req, res)=>{
   throw new NotFoundError()
 })
 
@@ -37,3 +38,5 @@ app.listen(3000, () => {
   console.log('Auth Running at port 3000');
 
 })
+
+//ASYNC ERRROS ARE THOSE ERRORS JO ASYNC HANDLER KAY ANDER HO
