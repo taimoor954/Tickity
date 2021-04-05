@@ -50,12 +50,11 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
-const user = User.build({ email: 'asd', password: 'pass' });
-user.email;
-user.password;
-// user.updatedAt; such properties wont be allowed because of UserDoc interface
 
 
+// <UserDoc, UserModel> this is what we called angle bracket sytnax. it is very generic syntax in ts
+//these generic syntax is basically function or types.these are basically types being provided to
+//model function as args. This means model function is going to written sth of type model
 
 //THE REASON WHY IM COMMENTING THIS FUCNTION, WE USE USERSCHEMA.STATICS METHOD TO INCLUDE BUILDFUNCTION IN USER CLASS
 //NOW WE CAN USE THIS LIKE USER.BUILD({email:'email', password:'password'})
@@ -69,3 +68,12 @@ user.password;
 
 // buildUser({email : 'email', password:"pass" })
 export { User };
+
+
+
+// const user = User.build({ email: 'asd', password: 'pass' });
+// user.email;
+// user.password;
+// user.updatedAt; such properties wont be allowed because of UserDoc interface
+
+//now in order to create new user use above syntax^^^^^^
