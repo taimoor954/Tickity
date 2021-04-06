@@ -4,6 +4,7 @@ import { RequestValidationError } from '../Errors/req-validation';
 
 import { body, validationResult } from 'express-validator';
 import { User } from '../Models/userModel';
+import { BadRequestError } from '../Errors/BadRequest';
 const router = express.Router();
 
 router.post(
@@ -31,11 +32,9 @@ router.post(
     const existingUser = await User.findOne({email})
     if(existingUser)
     {
-      console.log('User exist with this email id');
-      return response.status(400).json({
-        status:'failed',
-        message:"User exist with this email id"
-      })
+
+     //Created my own bad request classs
+      throw new BadRequestError('Email in use')
     }
     const user = User.build({email, password})
     await user.save()
