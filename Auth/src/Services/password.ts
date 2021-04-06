@@ -9,12 +9,15 @@ export class Password{
   {
     const salt = randomBytes(8).toString('hex')
      const buffer = (await scryptAsync(password, salt , 64)) as Buffer
+     //CONCATENATE 2 STRINGS TOGETHER AND RETURN THEM
      return `${buffer.toString('hex')}.${salt}}`
   }
 
-  static comparePassword(storedPassword:string, supppliedPassword: string)
+  static async comparePassword(storedPassword:string, supppliedPassword: string)
   {
-
+    const [hashedPassword, salt] = storedPassword.split('.')
+    const buffer = (await scryptAsync(supppliedPassword, salt , 64)) as Buffer
+    return buffer.toString('hex') === hashedPassword
   }
 
 
