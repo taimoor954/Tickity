@@ -20,6 +20,11 @@ app.use(
 //COOKIE SESSION SET
 //COOKIE SESSION HAS THE ABILTY TO STORE MORE INFO IN IT WITHOUT USING ANY DB TO STORE
 app.use(cookieSession({signed: false, secure: true, }));
+//signed means cookie session is not encrypting. We are not encryoting cookie sessoin because her service 
+//jo diffrent langauges may likhi hai sab may cookie session decrypt karnay ka tareeqa diffrent hai
+//so sab ka decyption code likhna parayga
+//without encyrption is not a big securty deal beacuse ager jwt halka sa bhi tamper hua tou
+//sab jwt invalid hojayega and also we not adding password in jwt
 
 app.use(
   express.urlencoded({
