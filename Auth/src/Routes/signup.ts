@@ -39,7 +39,7 @@ router.post(
     await user.save()
     //GENERATE JWT
     //tp store secret use kube8 to store it as a env variable
-    const userJwt = jwt.sign({ id: user.id, email: user.email }, 'PRIVATE_KEY')
+    const userJwt = jwt.sign({ id: user.id, email: user.email }, process.env.jwt!) //process.env.jwt! here "!" mean hey ts, process.env.jwt is defined and we are 100% sure about that. if we dont put "!" it will show error
     //store it into session object 
     request.session = {
       jwt: userJwt

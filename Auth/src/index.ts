@@ -49,6 +49,10 @@ app.use(errorHandler);
 
 //MONGO STARTUP
 const mongoConnection = async () => {
+  if(!process.env.jwt)
+  {
+    throw new Error('Jwt is not defined as env variable!!!')
+  }
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
       useNewUrlParser: true,
