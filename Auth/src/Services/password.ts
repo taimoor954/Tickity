@@ -10,7 +10,7 @@ export class Password {
   static async hashPassword(password: string) {
     const salt = randomBytes(8).toString('hex');
     const buffer = (await scryptAsync(password, salt, 64)) as Buffer;
-    //CONCATENATE 2 STRINGS TOGETHER AND RETURN THEM
+    //CONCATENATE SALT AND BUFFER STRING TOGETHER AND RETURN THEM
     return `${buffer.toString('hex')}.${salt}`;
   }
 
