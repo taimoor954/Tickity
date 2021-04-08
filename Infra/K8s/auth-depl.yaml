@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-depl
-spec: 
+spec:
   replicas: 1
-  selector: 
+  selector:
     matchLabels:
       app: auth
   template:
@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: taimoor954/auth
+          env:
+            - name: jwt
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt
 ---
 apiVersion: v1
 kind: Service
@@ -26,5 +32,5 @@ spec:
   ports:
     - name: auth
       protocol: TCP
-      port: 3000 
+      port: 3000
       targetPort: 3000

@@ -38,6 +38,7 @@ router.post(
     const user = User.build({ email, password })
     await user.save()
     //GENERATE JWT
+    //tp store secret use kube8 to store it as a env variable
     const userJwt = jwt.sign({ id: user.id, email: user.email }, 'PRIVATE_KEY')
     //store it into session object 
     request.session = {
