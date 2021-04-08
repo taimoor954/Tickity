@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import cookieSession from 'cookie-session';
 import 'express-async-errors'; //USING THIS PACKAGE WE CAN DEAL WITH ASYNC ERRORS IN SYNC WAY WITHIUT USING NEXT MIDDLEWARE
 import { currentUserRouter } from './Routes/current-user';
 import { signinRouter } from './Routes/signin';
@@ -9,11 +10,17 @@ import { errorHandler } from '../src/middlewares/error-handler';
 import { NotFoundError } from './Errors/Not-Found-Error';
 
 const app = express();
+app.set('trust proxy', true)
 app.use(
   express.json({
     limit: '10kb', //size of req.body can be upto 10kb
   })
 ); //BODY PARSER
+
+//COOKIE SESSION SET
+//COOKIE SESSION HAS THE ABILTY TO STORE MORE INFO IN IT WITHOUT USING ANY DB TO STORE
+app.use(cookieSession({signed: false, secure: true, }));
+
 app.use(
   express.urlencoded({
     extended: true,
@@ -44,13 +51,12 @@ const mongoConnection = async () => {
       useCreateIndex: true,
     });
     console.log('Connected to monogo instance succesfully....');
-    
   } catch (error) {
     console.log(error);
   }
 };
 
-mongoConnection()
+mongoConnection();
 
 app.listen(3000, () => {
   console.log('Auth Running at port 3000');
