@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { DatabaseConnectionError } from '../Errors/DatabaseConn-error';
 import { RequestValidationError } from '../Errors/req-validation';
-
+import jwt from 'jsonwebtoken'
 import { body, validationResult } from 'express-validator';
 import { User } from '../Models/userModel';
 import { BadRequestError } from '../Errors/BadRequest';
@@ -27,24 +27,30 @@ router.post(
 
       // return response.status(400).send(errors.array());
     }
-    
-    const {email, password} = request.body
-    const existingUser = await User.findOne({email})
-    if(existingUser)
-    {
 
-     //Created my own bad request classs
+    const { email, password } = request.body
+    const existingUser = await User.findOne({ email })
+    if (existingUser) {
+
+      //Created my own bad request classs
       throw new BadRequestError('Email in use')
     }
-    const user = User.build({email, password})
+    const user = User.build({ email, password })
     await user.save()
+    //GENERATE JWT
+    const userJwt = jwt.sign({ id: user.id, email: user.email }, 'PRIVATE_KEY')
+    //store it into session object 
+    request.session = {
+      jwt: userJwt
+    }
+
     return response.status(201).json({
-      status:'successfuly created user',
+      status: 'successfuly created user',
       data: user
     })
-     
-    
-  
+
+
+
     // console.log('Creating a user.....');
     // throw new DatabaseConnectionError('Error connecting to DB');
 
