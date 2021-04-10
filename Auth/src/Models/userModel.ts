@@ -42,7 +42,17 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  },
+  }
+},{
+  toJSON:{ //HAD TO MAKE THESE CHANGES BECAUSE ASSUME YAHA PER _ID USE HORAHA HAI BUT KOI OR SERVICE RUBY + POSTGRE PER HAI TOU AB POST GRE
+    transform(doc, ret)
+    {
+      ret.id = ret._id
+      delete ret._id
+      delete ret.password
+      delete ret.__v
+    } 
+  }
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {

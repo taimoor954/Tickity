@@ -4,6 +4,7 @@ import { RequestValidationError } from '../Errors/req-validation';
 import jwt from 'jsonwebtoken'
 import { body, validationResult } from 'express-validator';
 import { User } from '../Models/userModel';
+import { requestValidator } from "../middlewares/validate-request";
 import { BadRequestError } from '../Errors/BadRequest';
 const router = express.Router();
 
@@ -15,18 +16,13 @@ router.post(
       .trim()
       .isLength({ min: 4, max: 25 })
       .withMessage('Password must be between 4 and 25 length'),
-  ],
+  ],requestValidator,
   async (request: Request, response: Response) => {
     //DOES USER EXIST
     //IF NOT THEN HASH PASSWORD
     //CREATE A NEW USER AND SAVE THEM TO MONGODB
     //USER IS NOW CONSIDER TO BE LOGGED IN. SEND THEM JWT TOKEN OR STH LIKE THAT
-    const errors = validationResult(request);
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-
-      // return response.status(400).send(errors.array());
-    }
+  
 
     const { email, password } = request.body
     const existingUser = await User.findOne({ email })
