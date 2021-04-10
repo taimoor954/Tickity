@@ -40,7 +40,7 @@ router.post(
     request.session = {
       jwt: userJwt
     }
-
+ 
     return response.status(201).json({
       status: 'successfuly created user',
       data: user

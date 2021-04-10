@@ -28,12 +28,18 @@ router.post(
   requestValidator,
   async (request: Request, response: Response) => {
     const {email, password} = request.body
+    
+    
+    
     const existingUser = await User.findOne({email})
+    
     if(!existingUser){
-      throw new BadRequestError('Something wrong with email or password')
-      return
+      throw new BadRequestError('Something wrong with email or password1')
+      
     }
     const passwordMatch = await Password.comparePassword(existingUser.password, password)
+    console.log(passwordMatch);
+    
     if(!passwordMatch){
       throw new BadRequestError('Something wrong with email or password')
     } 
