@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
 import { DatabaseConnectionError } from '../Errors/DatabaseConn-error';
 import { RequestValidationError } from '../Errors/req-validation';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 import { body, validationResult } from 'express-validator';
 import { User } from '../Models/userModel';
-import { requestValidator } from "../middlewares/validate-request";
+import { requestValidator } from '../middlewares/validate-request';
 import { BadRequestError } from '../Errors/BadRequest';
 const router = express.Router();
 
@@ -16,37 +16,37 @@ router.post(
       .trim()
       .isLength({ min: 4, max: 25 })
       .withMessage('Password must be between 4 and 25 length'),
-  ],requestValidator,
+  ],
+  requestValidator,
   async (request: Request, response: Response) => {
     //DOES USER EXIST
     //IF NOT THEN HASH PASSWORD
     //CREATE A NEW USER AND SAVE THEM TO MONGODB
     //USER IS NOW CONSIDER TO BE LOGGED IN. SEND THEM JWT TOKEN OR STH LIKE THAT
-  
 
-    const { email, password } = request.body
-    const existingUser = await User.findOne({ email })
+    const { email, password } = request.body;
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
-
       //Created my own bad request classs
-      throw new BadRequestError('Email in use')
+      throw new BadRequestError('Email in use');
     }
-    const user = User.build({ email, password })
-    await user.save()
+    const user = User.build({ email, password });
+    await user.save();
     //GENERATE JWT
     //tp store secret use kube8 to store it as a env variable
-    const userJwt = jwt.sign({ id: user.id, email: user.email }, process.env.jwt!) //process.env.jwt! here "!" mean hey ts, process.env.jwt is defined and we are 100% sure about that. if we dont put "!" it will show error
-    //store it into session object 
+    const userJwt = jwt.sign(
+      { id: user.id, email: user.email },
+      process.env.jwt!
+    ); //process.env.jwt! here "!" mean hey ts, process.env.jwt is defined and we are 100% sure about that. if we dont put "!" it will show error
+    //store it into session object
     request.session = {
-      jwt: userJwt
-    }
- 
+      jwt: userJwt,
+    };
+
     return response.status(201).json({
       status: 'successfuly created user',
-      data: user
-    })
-
-
+      data: user,
+    });
 
     // console.log('Creating a user.....');
     // throw new DatabaseConnectionError('Error connecting to DB');
