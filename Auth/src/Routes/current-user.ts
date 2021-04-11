@@ -1,29 +1,12 @@
-import express from 'express'
-import jwt from "jsonwebtoken";
-const router = express.Router()
-router.get('/api/users/currentuser', (request, response)=> {
-if(!request.session?.jwt) //check if request.session exist if yes then .jwt check karo 
-{
-  return response.status(200).json({
-    currentUser : null
-  })
-}
-//get payload from jwt 
-
-try {
-  const payload = jwt.verify(request.session.jwt, process.env.jwt!)
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import { currentUser } from '../middlewares/current-user';
+const router = express.Router();
+router.get('/api/users/currentuser', currentUser, (request, response) => {
   response.status(200).json({
-  currentUser:payload
-  }) 
-  
-} catch (error) {
-  response.status(400).json({
-    currentUser : null, 
-    error: error
-  }) 
+    status: 'Success',
+    data: request.currentUser || null, //if no user is signed in then send null
+  });
+});
 
-}
-
-})
-
-export {router as currentUserRouter}
+export { router as currentUserRouter };
